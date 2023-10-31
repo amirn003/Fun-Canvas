@@ -6,12 +6,14 @@ canvas.height = window.innerHeight;
 ctx.strokeStyle = '#BADA55';
 ctx.lineJoin = 'round';
 ctx.lineCap = 'round';
-ctx.lineWidth = 50;
+ctx.lineWidth = 0;
+ctx.globalCompositeOperation = 'xor';
 
 let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let hue = 0;
+let direction = true;
 
 function draw(e) {
   if (!isDrawing) return;
@@ -23,9 +25,22 @@ function draw(e) {
   ctx.stroke();
   [lastX, lastY] = [e.offsetX, e.offsetY];
   hue++;
+
   if (hue > 360) {
     hue = 0;
   }
+
+  if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+    direction = !direction;
+  }
+
+  if(direction){
+    ctx.lineWidth++;
+  } else {
+    ctx.lineWidth--;
+  }
+
+
 }
 canvas.addEventListener("mousedown", (e) => {
   isDrawing = true;
